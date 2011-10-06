@@ -38,6 +38,8 @@ reduce (Clos (CC, _), v : s) f =
   f (v, Cont s : s)
 reduce (Cont cs, v : s) f =
   f (v, cs)
+  
+reduce (Clos (Nat n, p), s) _ = (Clos (Nat n, p), s)
 
 -- NOTE: Halt if...
 

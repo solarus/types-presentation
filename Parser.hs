@@ -12,6 +12,11 @@ import Text.Parsec.String
 
 type Ctx = [String]
 
+parseNum :: Parser Term
+parseNum = do
+  n <- digit
+  return $ Nat (read [n])
+
 parseIdent :: Parser String
 parseIdent = (:) <$> letter <*> many alphaNum
 
@@ -32,7 +37,7 @@ parseLambda ctx = do
 
 parseApp :: Ctx -> Parser Term
 parseApp ctx = do
-  let parseTerm' = try (addParen (parseApp ctx)) <|> try (addParen (parseLambda ctx)) <|> parseId ctx
+  let parseTerm' = try (addParen (parseApp ctx)) <|> try (addParen (parseLambda ctx)) <|> parseId ctx <|> parseNum
   t1 <- parseTerm'
   terms <- some (some space *> parseTerm')
   return $ foldl App t1 terms
@@ -45,6 +50,7 @@ parseTerm ctx =
       try (parseApp ctx)
   <|> try (parseLambda ctx)
   <|> parseId ctx
+  <|> parseNum
   <|> addParen (parseTerm ctx)
   
 readTerm s = case (parse (parseTerm [] <* eof) "" s) of
