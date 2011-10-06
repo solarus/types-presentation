@@ -7,7 +7,7 @@
 #+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
 #+STARTUP: indent
 #+startup: beamer
-#+LaTeX_HEADER: \usepackage{amsmath, mathpartir}
+#+LaTeX_HEADER: \usepackage{amsmath}
 #+LaTeX_CLASS: beamer
 
 * Introduction
