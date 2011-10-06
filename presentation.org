@@ -1,0 +1,48 @@
+#+TITLE: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine
+#+AUTHOR:    
+#+DATE:      
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+STARTUP: indent
+#+startup: beamer
+#+LaTeX_HEADER: \usepackage{amsmath, mathpartir}
+#+LaTeX_CLASS: beamer
+
+* Introduction
+
+
+* Grammar
+** Terms
+$t~::=~n~|~\lambda~t~|~t~t$
+\pause
+** Environments
+$\rho~::=~()~|~(\rho,v)$
+\pause
+** Values
+$v~::=~t\rho$
+\pause
+** Stack
+$s~::=~()~|~v\cdot s$
+
+* Reduction rules
+** State
+A tuple := $(t,\rho,s)$
+
+\pause
+
+| / |                         <r> |             | <l>                          |            <r> |        |
+|   |           $(0,(\rho,tv),s)$ | \rightarrow | $(t,v,s)$                    |     (E-Lookup) | \pause |
+|   |          $(n+1,(\rho,u),s)$ | \rightarrow | $(n,\rho,s)$                 | (E-LookupNext) | \pause |
+|   | $(\lambda t,\rho,v\cdot s)$ | \rightarrow | $(t,(\rho,v),s)$             |        (E-Pop) | \pause |
+|   |          $(t_1~t_2,\rho,s)$ | \rightarrow | $(t1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
+|   |                             |             |                              |                |        |
+
+* Examples
+
+
+
+* Proof
+
+* CC
