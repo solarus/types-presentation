@@ -41,6 +41,17 @@ A tuple := $(t,\rho,s)$
 
 * Examples
 
+- \Omega \overset{\text{def}}= (\lambda.0 0) (\lambda.0 0)
+\pause
+
+| Term                                     | Environment                                   | Stack                           |             |        |
+|------------------------------------------+-----------------------------------------------+---------------------------------+-------------+--------|
+| ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \rightarrow | \pause |
+| (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \rightarrow | \pause |
+| (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \rightarrow | \pause |
+| (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \rightarrow | \pause |
+| 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \rightarrow | \pause |
+| (\lambda.0)                              | ()                                            | ()                              |             |        |
 
 
 * Proof
