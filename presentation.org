@@ -1,5 +1,5 @@
 #+TITLE: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine
-#+AUTHOR:    
+#+AUTHOR: Presentation by Johan Elvek and David Spångberg
 #+DATE:      
 #+DESCRIPTION:
 #+KEYWORDS:
@@ -11,8 +11,23 @@
 #+LaTeX_CLASS: beamer
 
 * Introduction
+| \Huge \lambda  |
 
+1. An abstract, call-by-name, $\lambda$-calculus machine
+  - Grammar and Reduction Rules
+    - A simple example
+2. Proof of ?!?!
+3. Language extension: \texttt{call/cc}
+  - New Grammar and Reduction Rules
+    - An interactive example
+* The Machine --- The Why
+** In general: for theoretical purposes
 
+** In particular: proofs as programs!
+*** Given a proof $D$ of a theorem, and $P_D$, the program ``extracted'' from $D$:
+1. ``How should one execute these programs so as to obtain a \emph{meaningful} behaviour?''
+2. Krivine's machine provides answer to \textbf{1.} --- but then, what is the common behavior of programs \emph{all} programs $P_D$ extracted from $D$?
+* Call-by-name Calling Convention
 * Grammar
 ** Terms
 $t~::=~n~|~\lambda~t~|~t~t$
@@ -26,34 +41,68 @@ $v~::=~t\rho$
 ** Stack
 $s~::=~()~|~v\cdot s$
 
-* Reduction rules
+* Reduction Rules
 ** State
 A tuple := $(t,\rho,s)$
 
 \pause
 
-| / |                         <r> |             | <l>                          |            <r> |        |
-|   |           $(0,(\rho,tv),s)$ | \rightarrow | $(t,v,s)$                    |     (E-Lookup) | \pause |
-|   |          $(n+1,(\rho,u),s)$ | \rightarrow | $(n,\rho,s)$                 | (E-LookupNext) | \pause |
-|   | $(\lambda t,\rho,v\cdot s)$ | \rightarrow | $(t,(\rho,v),s)$             |        (E-Pop) | \pause |
-|   |          $(t_1~t_2,\rho,s)$ | \rightarrow | $(t1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
-|   |                             |             |                              |                |        |
+| / |                         <r> |             | <l>                           |            <r> |        |
+|   |           $(0,(\rho,tv),s)$ | \rightarrow | $(t,v,s)$                     |     (E-Lookup) | \pause |
+|   |          $(n+1,(\rho,v),s)$ | \rightarrow | $(n,\rho,s)$                  | (E-LookupNext) | \pause |
+|   | $(\lambda t,\rho,v\cdot s)$ | \rightarrow | $(t,(\rho,v),s)$              |        (E-Pop) | \pause |
+|   |          $(t_1~t_2,\rho,s)$ | \rightarrow | $(t_1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
+|   |                             |             |                               |                |        |
 
-* Examples
+* Example I
 
 - \Omega \overset{\text{def}}= (\lambda.0 0) (\lambda.0 0)
 \pause
 
-| Term                                     | Environment                                   | Stack                           |             |        |
-|------------------------------------------+-----------------------------------------------+---------------------------------+-------------+--------|
-| ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \rightarrow | \pause |
-| (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \rightarrow | \pause |
-| (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \rightarrow | \pause |
-| (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \rightarrow | \pause |
-| 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \rightarrow | \pause |
-| (\lambda.0)                              | ()                                            | ()                              |             |        |
+|             | Term                                     | Environment                                   | Stack                           |        |
+|-------------+------------------------------------------+-----------------------------------------------+---------------------------------+--------|
+|             | ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \pause |
+| \rightarrow | (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \pause |
+| \rightarrow | (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \pause |
+| \rightarrow | (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \pause |
+| \rightarrow | 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \pause |
+| \rightarrow | (\lambda.0)                              | ()                                            | ()                              |        |
 
 
-* Proof
+* TODO Proof
 
-* CC
+* TODO CC
+** According to Krivine, extending the language with \texttt{call/cc} gives:
+\begin{quote}
+[\,\ldots\,] an obvious utility for programming.
+\end{quote}
+** \texttt{call/cc} is arguably a powerful contstruct, the obviousness, however, is\ldots debatable
+* New Grammar
+** Terms
+$t~::=~n~|~\lambda~t~|~t~t$
+\pause
+** Environments
+$\rho~::=~()~|~(\rho,v)$
+\pause
+** Values
+$v~::=~t\rho~|~k_s$
+\pause
+** Stack
+$s~::=~()~|~v\cdot s$
+* New Reduction Rules
+** State
+A tuple := $(v,s)$
+
+\pause
+
+| / |                          <r> |             | <l>                          |            <r> |        |
+|   |             $(0(\rho,v),s)$  | \rightarrow | $(v,s)$                      |     (E-Lookup) | \pause |
+|   |            $(n+1(\rho,v),s)$ | \rightarrow | $(n\rho,s)$                  | (E-LookupNext) | \pause |
+|   | $((\lambda t)\rho,v\cdot s)$ | \rightarrow | $(t(\rho,v),s)$              |        (E-Pop) | \pause |
+|   |          $((t_1~t_2)\rho,s)$ | \rightarrow | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
+|   |                              | \,          |                              |                |        |
+|   |   $(\text{cc}\rho,v\cdot s)$ | \rightarrow | $(v,k_s\cdot s)$             |         (E-CC) |        |
+|   |        $(k_\sigma,v\cdot s)$ | \rightarrow | $(v,\sigma)$                 |       (E-Cont) |        |
+* Example II
+- \text{T} \overset{\text{def}}= (\lambda.\lambda.1)
+- \text{F} \overset{\text{def}}= (\lambda.\lambda.0)
