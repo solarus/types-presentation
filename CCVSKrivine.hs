@@ -94,3 +94,23 @@ tempt = readTerm "((/x./y.(x y)) ((/x.x) (/x.x)))"
 
 temps :: State
 temps = (Clos (tempt,E (Empty,Clos (Idx 0,Empty))),[])
+
+-- CC
+
+noCCStr :: String
+noCCStr = "(/x.x (/t./f.t) (/x.x)) (/t./f.f) (/t./f.t)"
+
+withCCStr :: String
+withCCStr = "cc " ++ noCCStr
+
+noCC :: IO ()
+noCC = do
+  putStrLn noCCStr
+  let t = eval (readTerm noCCStr)
+  putStrLn (show t)
+
+withCC :: IO ()
+withCC = do
+  putStrLn withCCStr
+  let t = eval (readTerm withCCStr)
+  putStrLn (show t)
