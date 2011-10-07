@@ -29,9 +29,9 @@
 1. How should one execute such a program, so as to obtain a
    meaningful behavior?\\\quad --- Krivine's machine provides the answer
 2. And then, what is the common behavior of \emph{all} programs $P_D$
-   extracted from $D$?\\\quad --- SOMETHING SOMETHING Weak head
-   reduction\ldots
-*** EXPAND UPON \textbf{2.}!!!
+   extracted from \emph{all} proofs $D$?\\\quad --- This is a more
+   difficult problem, but, according to Krivine, weak head reduction
+   is an important <WORD> towards solving this
 * Call-by-name Calling Convention
 - Don't evaluate arguments until they are actually used! \pause
 ** The machine:
@@ -39,7 +39,6 @@
   stack. \pause
 - (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
   (More on this later\ldots)
-
 * Grammar
 ** Terms
 $t~::=~n~|~\lambda~t~|~t~t$
