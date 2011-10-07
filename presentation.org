@@ -32,7 +32,14 @@
    extracted from $D$?\\\quad --- SOMETHING SOMETHING Weak head
    reduction\ldots
 *** EXPAND UPON \textbf{2.}!!!
-* TODO Call-by-name Calling Convention
+* Call-by-name Calling Convention
+- Don't evaluate arguments until they are actually used! \pause
+** The machine:
+- Just copy the term "argument" and the current environment to the
+  stack. \pause
+- (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
+  (More on this later\ldots)
+
 * Grammar
 ** Terms
 $t~::=~n~|~\lambda~t~|~t~t$
