@@ -6,6 +6,8 @@ data Term = Idx Int | Nat Int | Abs Term | App Term Term | CC
 data Value = Clos (Term, Environment) | Cont Stack
      deriving (Show,Eq)
 
+-- for readability we have E (Value, Environment)
+-- insteaf of              E (Environment, Value)
 data Environment = Empty | E (Value, Environment)
      deriving (Show,Eq)
 
