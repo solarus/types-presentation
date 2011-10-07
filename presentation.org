@@ -1,4 +1,4 @@
-#+TITLE: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine
+#+Title: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine
 #+AUTHOR: Presentation by Johan Elvek and David Spångberg
 #+DATE:      
 #+DESCRIPTION:
@@ -10,34 +10,40 @@
 #+LaTeX_HEADER: \usepackage{amsmath}
 #+LaTeX_CLASS: beamer
 
-* TODO Introduction
+* Introduction
+
 | \Huge $\lambda$ |
 
 1. An abstract, call-by-name, $\lambda$-calculus machine
   - Grammar and Reduction Rules
     - A simple example
-2. Proof ???
-3. Language extension: \texttt{call/cc}
+2. Language Extension: \texttt{call/cc}
   - New Grammar and Reduction Rules
+
 ** An interactive example
 
 ** Questions
 
-* TODO The Machine --- The Why
+* The Machine
+
 ** In general: for theoretical purposes
 
 ** In particular: proofs as programs
 *** Given a proof $D$ of a theorem, and a program $P_D$, ``extracted'' from that proof:
 1. How should one execute such a program, so as to obtain a
-   meaningful behavior?\\\quad --- Krivine's machine provides the answer
+   meaningful behavior? \pause \\\quad --- Krivine's machine provides the
+   answer \pause
 2. And then, what is the common behavior of \emph{all} programs $P_D$
-   extracted from \emph{all} proofs $D$?\\\quad --- This is a more
-   difficult problem, but, according to Krivine, weak head reduction
-   is an important <WORD> towards solving this
+   extracted from \emph{all} proofs $D$? \pause \\\quad --- Krivine
+   argues that weak head reduction is necessary to solve this (more
+   difficult) problem \pause \\~\\Unfortunately, this is not further
+   expanded upon
 
 * Call-by-name Calling Convention
+
 - Don't evaluate arguments until they are actually used! \pause
-** The machine:
+
+** Krivine's machine:
 - Just copy the term "argument" and the current environment to the
   stack. \pause
 - (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
@@ -57,6 +63,7 @@ $v~::=~t\rho$
 $s~::=~()~|~v\cdot s$
 
 * Reduction Rules
+
 | $t~::=~n~\vert~\lambda~t~\vert~t~t$ | $\rho~::=~()~\vert~(\rho,v)$ |
 | $v~::=~t\rho$                       | $s~::=~()~\vert~v\cdot s$    |
 
@@ -65,34 +72,40 @@ A tuple := $(t,\rho,s)$
 
 \pause
 
-| / |                         <r> |               | <l>                           |            <r> |        |
-|   |           $(0,(\rho,tv),s)$ | $\rightarrow$ | $(t,v,s)$                     |     (E-Lookup) | \pause |
-|   |          $(n+1,(\rho,v),s)$ | $\rightarrow$ | $(n,\rho,s)$                  | (E-LookupNext) | \pause |
-|   | $(\lambda t,\rho,v\cdot s)$ | $\rightarrow$ | $(t,(\rho,v),s)$              |        (E-Pop) | \pause |
-|   |          $(t_1~t_2,\rho,s)$ | $\rightarrow$ | $(t_1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) |        |
+| / |                         <r> |       | <l>                           |            <r> |        |
+|   |           $(0,(\rho,tv),s)$ | $\to$ | $(t,v,s)$                     |     (E-Lookup) | \pause |
+|   |          $(n+1,(\rho,v),s)$ | $\to$ | $(n,\rho,s)$                  | (E-LookupNext) | \pause |
+|   | $(\lambda t,\rho,v\cdot s)$ | $\to$ | $(t,(\rho,v),s)$              |        (E-Pop) | \pause |
+|   |          $(t_1~t_2,\rho,s)$ | $\to$ | $(t_1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) |        |
 
 * A Simple Example
+
 - $\Omega \overset{\text{def}}= (\lambda.0 0) (\lambda.0 0)$
 
 \pause
 
-|             | Term                                     | Environment                                   | Stack                           |        |
-|-------------+------------------------------------------+-----------------------------------------------+---------------------------------+--------|
-|             | ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \pause |
-| \rightarrow | (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \pause |
-| \rightarrow | (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \pause |
-| \rightarrow | (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \pause |
-| \rightarrow | 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \pause |
-| \rightarrow | (\lambda.0)                              | ()                                            | ()                              |        |
+|     | Term                                     | Environment                                   | Stack                           |        |
+|-----+------------------------------------------+-----------------------------------------------+---------------------------------+--------|
+|     | ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \pause |
+| \to | (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \pause |
+| \to | (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \pause |
+| \to | (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \pause |
+| \to | 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \pause |
+| \to | (\lambda.0)                              | ()                                            | ()                              |        |
 
-* TODO Proof
-* TODO CC
+* Language Extension: \texttt{call/cc}
+
 ** According to Krivine, extending the language with \texttt{call/cc} gives:
 \begin{quote}
 [\,\ldots\,] an obvious utility for programming.
-\end{quote}
-** \texttt{call/cc} is arguably a powerful construct, the obviousness, however, is\ldots debatable
-** EXPAND UPON THIS!!!
+\end{quote} \pause
+
+** \texttt{call/cc} is arguably a powerful construct --- the obviousness, however, is\ldots debatable \pause
+
+** Curry-Howard correspondence:
+*** The type of \texttt{call/cc} is (((A \to B) \to A) \to A) \pause
+That is also /Peirce's law/ --- which implies LEM \\\quad (ability to
+type check classical logic programs)
 
 * New Grammar
 ** Terms
@@ -108,22 +121,38 @@ $v~::=~t\rho~|~k_s$
 $s~::=~()~|~v\cdot s$
 
 * New Reduction Rules
+
+| $t~::=~n~\vert~\lambda~t~\vert~t~t$ | $\rho~::=~()~\vert~(\rho,v)$ |
+| $v~::=~t\rho~\vert~k_s$             | $s~::=~()~\vert~v\cdot s$    |
+
 ** State
 A tuple := $(v,s)$
 
 \pause
 
-| / |                          <r> |               | <l>                          |            <r> |        |
-|   |              $(0(\rho,v),s)$ | $\rightarrow$ | $(v,s)$                      |     (E-Lookup) | \pause |
-|   |            $(n+1(\rho,v),s)$ | $\rightarrow$ | $(n\rho,s)$                  | (E-LookupNext) | \pause |
-|   | $((\lambda t)\rho,v\cdot s)$ | $\rightarrow$ | $(t(\rho,v),s)$              |        (E-Pop) | \pause |
-|   |          $((t_1~t_2)\rho,s)$ | $\rightarrow$ | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
-|   |                              | \,            |                              |                |        |
-|   |   $(\text{cc}\rho,v\cdot s)$ | $\rightarrow$ | $(v,k_s\cdot s)$             |         (E-CC) |        |
-|   |        $(k_\sigma,v\cdot s)$ | $\rightarrow$ | $(v,\sigma)$                 |       (E-Cont) |        |
+| / |                          <r> |       | <l>                          |            <r> |        |
+|   |              $(0(\rho,v),s)$ | $\to  | $(v,s)$                      |     (E-Lookup) | \pause |
+|   |            $(n+1(\rho,v),s)$ | $\to$ | $(n\rho,s)$                  | (E-LookupNext) | \pause |
+|   | $((\lambda t)\rho,v\cdot s)$ | $\to$ | $(t(\rho,v),s)$              |        (E-Pop) | \pause |
+|   |          $((t_1~t_2)\rho,s)$ | $\to$ | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
+|   |                              | \,    |                              |                |        |
+|   |   $(\text{cc}\rho,v\cdot s)$ | $\to$ | $(v,k_s\cdot s)$             |         (E-CC) |        |
+|   |        $(k_\sigma,v\cdot s)$ | $\to$ | $(v,\sigma)$                 |       (E-Cont) |        |
 
 * An Interactive Example
-GooOOoo Haskell!
+
+#+ATTR_LaTeX: width=0.33\textwidth
+| [[./stock.png]] |
 
 * Questions
+
 | \Huge $\lambda_?$ |
+
+\vfill
+\vfill
+
+\small
+Proof techniques used in the paper:
+- Proof by Structural Induction
+- Proof by General Agreement: All in favor?
+- Proof by A.F.K.T Theorem: Any Fool Knows That!
