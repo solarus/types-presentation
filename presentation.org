@@ -53,6 +53,9 @@ $v~::=~t\rho$
 $s~::=~()~|~v\cdot s$
 
 * Reduction Rules
+| $t~::=~n~\vert~\lambda~t~\vert~t~t$ | $\rho~::=~()~\vert~(\rho,v)$ |
+| $v~::=~t\rho$                       | $s~::=~()~\vert~v\cdot s$    |
+
 ** State
 A tuple := $(t,\rho,s)$
 
