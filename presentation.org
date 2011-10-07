@@ -36,7 +36,7 @@
 2. And then, what is the common behavior of \emph{all} programs $P_D$
    extracted from \emph{all} proofs $D$? \pause \\\quad --- Krivine
    argues that weak head reduction is necessary to solve this (more
-   difficult) problem \pause \\~\\Unfortunately, this is not further
+   difficult) problem \pause \\ --- Unfortunately, this is not further
    expanded upon
 
 * Call-by-name Calling Convention
@@ -73,10 +73,10 @@ A tuple := $(t,\rho,s)$
 \pause
 
 | / |                         <r> |       | <l>                           |            <r> |        |
-|   |           $(0,(\rho,tv),s)$ | $\to$ | $(t,v,s)$                     |     (E-Lookup) | \pause |
-|   |          $(n+1,(\rho,v),s)$ | $\to$ | $(n,\rho,s)$                  | (E-LookupNext) | \pause |
+|   |          $(t_1~t_2,\rho,s)$ | $\to$ | $(t_1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
 |   | $(\lambda t,\rho,v\cdot s)$ | $\to$ | $(t,(\rho,v),s)$              |        (E-Pop) | \pause |
-|   |          $(t_1~t_2,\rho,s)$ | $\to$ | $(t_1,\rho,(t_2\rho)\cdot s)$ |       (E-Push) |        |
+|   |          $(n+1,(\rho,v),s)$ | $\to$ | $(n,\rho,s)$                  | (E-LookupNext) | \pause |
+|   |           $(0,(\rho,tv),s)$ | $\to$ | $(t,v,s)$                     |     (E-Lookup) |        |
 
 * A Simple Example
 
@@ -109,7 +109,7 @@ type check classical logic programs)
 
 * New Grammar
 ** Terms
-$t~::=~n~|~\lambda~t~|~t~t$
+$t~::=~n~|~\lambda~t~|~t~t~|~\texttt{cc}$
 \pause
 ** Environments
 $\rho~::=~()~|~(\rho,v)$
@@ -131,10 +131,10 @@ A tuple := $(v,s)$
 \pause
 
 | / |                          <r> |       | <l>                          |            <r> |        |
+|   |          $((t_1~t_2)\rho,s)$ | $\to$ | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) |        |
+|   | $((\lambda t)\rho,v\cdot s)$ | $\to$ | $(t(\rho,v),s)$              |        (E-Pop) |        |
+|   |            $(n+1(\rho,v),s)$ | $\to$ | $(n\rho,s)$                  | (E-LookupNext) |        |
 |   |              $(0(\rho,v),s)$ | $\to  | $(v,s)$                      |     (E-Lookup) | \pause |
-|   |            $(n+1(\rho,v),s)$ | $\to$ | $(n\rho,s)$                  | (E-LookupNext) | \pause |
-|   | $((\lambda t)\rho,v\cdot s)$ | $\to$ | $(t(\rho,v),s)$              |        (E-Pop) | \pause |
-|   |          $((t_1~t_2)\rho,s)$ | $\to$ | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) | \pause |
 |   |                              | \,    |                              |                |        |
 |   |   $(\text{cc}\rho,v\cdot s)$ | $\to$ | $(v,k_s\cdot s)$             |         (E-CC) |        |
 |   |        $(k_\sigma,v\cdot s)$ | $\to$ | $(v,\sigma)$                 |       (E-Cont) |        |
