@@ -20,7 +20,9 @@
 3. Language extension: \texttt{call/cc}
   - New Grammar and Reduction Rules
 ** An interactive example
+
 ** Questions
+
 * TODO The Machine --- The Why
 ** In general: for theoretical purposes
 
@@ -32,6 +34,7 @@
    extracted from \emph{all} proofs $D$?\\\quad --- This is a more
    difficult problem, but, according to Krivine, weak head reduction
    is an important <WORD> towards solving this
+
 * Call-by-name Calling Convention
 - Don't evaluate arguments until they are actually used! \pause
 ** The machine:
@@ -39,6 +42,7 @@
   stack. \pause
 - (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
   (More on this later\ldots)
+
 * Grammar
 ** Terms
 $t~::=~n~|~\lambda~t~|~t~t$
@@ -89,6 +93,7 @@ A tuple := $(t,\rho,s)$
 \end{quote}
 ** \texttt{call/cc} is arguably a powerful construct, the obviousness, however, is\ldots debatable
 ** EXPAND UPON THIS!!!
+
 * New Grammar
 ** Terms
 $t~::=~n~|~\lambda~t~|~t~t$
@@ -101,6 +106,7 @@ $v~::=~t\rho~|~k_s$
 \pause
 ** Stack
 $s~::=~()~|~v\cdot s$
+
 * New Reduction Rules
 ** State
 A tuple := $(v,s)$
@@ -115,7 +121,9 @@ A tuple := $(v,s)$
 |   |                              | \,            |                              |                |        |
 |   |   $(\text{cc}\rho,v\cdot s)$ | $\rightarrow$ | $(v,k_s\cdot s)$             |         (E-CC) |        |
 |   |        $(k_\sigma,v\cdot s)$ | $\rightarrow$ | $(v,\sigma)$                 |       (E-Cont) |        |
+
 * An Interactive Example
 GooOOoo Haskell!
+
 * Questions
 | \Huge $\lambda_?$ |
