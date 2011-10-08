@@ -1,4 +1,4 @@
-#+Title: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine
+#+Title: Call-by-name lambda-calculus machine \\\normalsize Jean-Louis Krivine (2006)
 #+AUTHOR: Presentation by Johan Elvek and David Spångberg
 #+DATE:      
 #+DESCRIPTION:
@@ -10,7 +10,7 @@
 #+LaTeX_HEADER: \usepackage{amsmath}
 #+LaTeX_CLASS: beamer
 
-* Introduction
+* Overview
 
 | \Huge $\lambda$ |
 
@@ -29,24 +29,24 @@
 ** In general: for theoretical purposes
 
 ** In particular: proofs as programs
-*** Given a proof $D$ of a theorem, and a program $P_D$, ``extracted'' from that proof:
-1. How should one execute such a program, so as to obtain a
-   meaningful behavior? \pause \\\quad --- Krivine's machine provides the
-   answer \pause
+*** Given a proof $D$ of a theorem, and a program $P_D$, "extracted" from that proof\ldots \pause
+1. How can we execute such a program, in order to obtain a meaningful
+   behavior? \pause \\\quad --- This machine provides the answer
+   \pause
 2. And then, what is the common behavior of \emph{all} programs $P_D$
    extracted from \emph{all} proofs $D$? \pause \\\quad --- Krivine
    argues that weak head reduction is necessary to solve this (more
    difficult) problem \pause \\ --- Unfortunately, this is not further
    expanded upon
 
-* Call-by-name Calling Convention
+* The Call-by-name Calling Convention
 
-- Don't evaluate arguments until they are actually used! \pause
+- Do not evaluate function arguments until they are needed! \pause
 
-** Krivine's machine:
-- Just copy the term "argument" and the current environment to the
-  stack. \pause
-- (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
+** This machine:
+- Copy the argument (term) and its current environment to a
+  stack.
+- Acc. to the rule: (t_1 t_2, \rho, s) \rightarrow (t_1, \rho, (t_2,\rho) \cdot s)\\
   (More on this later\ldots)
 
 * Grammar
@@ -82,16 +82,15 @@ A tuple := $(t,\rho,s)$
 
 - $\Omega \overset{\text{def}}= (\lambda.0 0) (\lambda.0 0)$
 
-\pause
-
-|     | Term                                     | Environment                                   | Stack                           |        |
-|-----+------------------------------------------+-----------------------------------------------+---------------------------------+--------|
-|     | ((\lambda.\lambda.0) \Omega) (\lambda.0) | ()                                            | ()                              | \pause |
-| \to | (\lambda.\lambda.0) \Omega               | ()                                            | ({(\lambda.0),()})              | \pause |
-| \to | (\lambda.\lambda.0)                      | ()                                            | ({\Omega,()}, {(\lambda.0),()}) | \pause |
-| \to | (\lambda.0)                              | ((), {\Omega,()}) \overset{\text{def}}=\,\rho | ({(\lambda.0),()})              | \pause |
-| \to | 0                                        | (\rho, {(\lambda.0),()})                      | ()                              | \pause |
-| \to | (\lambda.0)                              | ()                                            | ()                              |        |
+|     | Term                                   | Environment                                        | Stack                          |        |
+|-----+----------------------------------------+----------------------------------------------------+--------------------------------+--------|
+|     | (\lambda.\lambda.1) (\lambda.0) \Omega | ()                                                 | ()                             | \pause |
+| \to | (\lambda.\lambda.1) (\lambda.0)        | ()                                                 | ({(\Omega),()})                | \pause |
+| \to | (\lambda.\lambda.1)                    | ()                                                 | ({(\lambda.0),()},{\Omega,()}) | \pause |
+| \to | (\lambda.1)                            | \rho \overset{\text{def}}=\,((), {(\lambda.0),()}) | ({(\Omega,()})                 | \pause |
+| \to | 1                                      | (\rho, {\Omega,()})                                | ()                             | \pause |
+| \to | 0                                      | ((), {(\lambda.0),()})                             | ()                             | \pause |
+| \to | (\lambda.0)                            | ()                                                 | ()                             |        |
 
 * Language Extension: \texttt{call/cc}
 
