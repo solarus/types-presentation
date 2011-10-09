@@ -25,19 +25,20 @@
 ** Questions
 
 * The Machine
-** Call-by-name and weak head reduction principle (leftmost outermost redex, do not reduce bodies of $\lambda$-abstractions)
+** Call-by-name and weak head reduction principle (leftmost outermost redex, no reduction 'inside' $\lambda$-abstractions)
+
 ** In general: for theoretical purposes
 
 ** In particular: proofs as programs
-*** Given a proof $D$ of a theorem, and a program $P_D$, "extracted" from that proof\ldots \pause
-1. How can we execute such a program, in order to obtain a meaningful
-   behavior? \pause \\\quad --- This machine provides the answer (due
-   to call-by-name) \pause
-2. And then, what is the common behavior of \emph{all} programs $P_D$
-   extracted from \emph{all} proofs $D$? \pause \\\quad --- Krivine
-   argues that weak head reduction is necessary to solve this (more
-   difficult) problem \pause \\ --- Unfortunately, this is not further
-   expanded upon
+*** Given a proof $D$ of a theorem, and a program $P_D$, 'extracted' from that proof\ldots \pause
+1. How can we execute such a program, so as to obtain a meaningful
+   behavior? \pause \\\quad --- According to Krivine; /exactly/ like
+   his call-by-name $\lambda$-calculus machine \pause
+2. What is the common behavior of \emph{all} programs $P_D$ extracted
+   from \emph{all} proofs $D$? \pause \\\quad --- Krivine argues that
+   weak head reduction is necessary to solve this problem \pause
+
+Unfortunately, this is not further expanded upon
 
 * The Call-by-name Calling Convention
 
