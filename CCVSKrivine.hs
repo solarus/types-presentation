@@ -9,8 +9,9 @@ import Control.Monad (void, when)
 
 eval :: Bool -> Term -> IO State
 eval debug t =
-  let d state = do
-        putStrLn $ "State = " ++ show state
+  let d (v,s) = do
+        showValue v
+        showStack s
         void getLine
       f df state lastState
         | state == lastState = return state
@@ -117,3 +118,37 @@ withCC b = do
   putStrLn withCCStr
   t <- eval b (readTerm withCCStr)
   putStrLn (show t)
+
+--------------------------------------------------
+-- helpers
+
+showValue :: Value -> IO ()
+showValue (Clos (t,e)) = do
+  putStrLn $ "Term  = " ++ show t
+  showEnv e
+showValue (Cont s) = do
+  putStrLn "Continuation"
+  showStack s
+  putStrLn "====="
+
+showStack :: Stack -> IO ()
+showStack [] = putStrLn "Stack = []"
+showStack (v:s) =
+  let f []     = putStrLn " ]"
+      f (v':s')  = do
+        putStr $ "\n        , " ++ show v'
+        f s'
+  in do
+    putStr "Stack = "
+    putStr $ "[ " ++ show v
+    f s
+
+showEnv :: Environment -> IO ()
+showEnv Empty = putStrLn "Env   = Empty"
+showEnv (E (v,e)) =
+  let f Empty      = putStrLn "\n        , Empty )"
+      f (E (v',e')) = do
+        putStr $ "\n        , " ++ show v'
+        f e'
+  in putStr ("Env   = ( " ++ show v) >> f e
+  
