@@ -133,7 +133,7 @@ A tuple := $(v,s)$
 |   |          $((t_1~t_2)\rho,s)$ | $\to$ | $(t_1\rho,(t_2\rho)\cdot s)$ |       (E-Push) |        |
 |   | $((\lambda t)\rho,v\cdot s)$ | $\to$ | $(t(\rho,v),s)$              |        (E-Pop) |        |
 |   |            $(n+1(\rho,v),s)$ | $\to$ | $(n\rho,s)$                  | (E-LookupNext) |        |
-|   |              $(0(\rho,v),s)$ | $\to  | $(v,s)$                      |     (E-Lookup) | \pause |
+|   |              $(0(\rho,v),s)$ | $\to$ | $(v,s)$                      |     (E-Lookup) | \pause |
 |   |                              | \,    |                              |                |        |
 |   |   $(\text{cc}\rho,v\cdot s)$ | $\to$ | $(v,k_s\cdot s)$             |         (E-CC) |        |
 |   |        $(k_\sigma,v\cdot s)$ | $\to$ | $(v,\sigma)$                 |       (E-Cont) |        |
