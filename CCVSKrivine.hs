@@ -1,17 +1,17 @@
-{-# OPTIONS -Wall #-}
+{-# OPTIONS -XFlexibleContexts -Wall #-}
 
 module CCVSKrivine where
 
 import Syntax
 import Parser
 
-import Control.Monad (void, when)
+import Control.Monad.Writer
 
 eval :: Bool -> Term -> IO State
 eval debug t =
   let d (v,s) = do
-        showValue v
-        showStack s
+        execWriterT (showValue v) >>= putStrLn
+        execWriterT (showStack "Stack" s) >>= putStrLn
         void getLine
       f df state lastState
         | state == lastState = return state
@@ -122,33 +122,32 @@ withCC b = do
 --------------------------------------------------
 -- helpers
 
-showValue :: Value -> IO ()
+showValue :: MonadWriter String m => Value -> m ()
 showValue (Clos (t,e)) = do
-  putStrLn $ "Term  = " ++ show t
+  tell $ "Term  = " ++ show t ++ "\n"
   showEnv e
 showValue (Cont s) = do
-  putStrLn "Continuation"
-  showStack s
-  putStrLn "====="
+  tell "Term  = Continuation\n"
+  showStack "CVal " s
 
-showStack :: Stack -> IO ()
-showStack [] = putStrLn "Stack = []"
-showStack (v:s) =
-  let f []     = putStrLn " ]"
+showStack :: MonadWriter String m => String -> Stack -> m ()
+showStack str [] = tell $ str ++ " = []"
+showStack str (v:s) =
+  let f []     = tell " ]"
       f (v':s')  = do
-        putStr $ "\n        , " ++ show v'
+        tell $ "\n" ++ fill ++ ", " ++ show v'
         f s'
+      fill = replicate (length str + 3) ' '
   in do
-    putStr "Stack = "
-    putStr $ "[ " ++ show v
+    tell $ str ++ " = "
+    tell $ "[ " ++ show v
     f s
 
-showEnv :: Environment -> IO ()
-showEnv Empty = putStrLn "Env   = Empty"
+showEnv :: MonadWriter String m => Environment -> m ()
+showEnv Empty = tell "Env   = Empty"
 showEnv (E (v,e)) =
-  let f Empty      = putStrLn "\n        , Empty )"
+  let f Empty       = tell "\n        , Empty )"
       f (E (v',e')) = do
-        putStr $ "\n        , " ++ show v'
+        tell $ "\n        , " ++ show v'
         f e'
-  in putStr ("Env   = ( " ++ show v) >> f e
-  
+  in tell ("Env   = ( " ++ show v) >> f e
