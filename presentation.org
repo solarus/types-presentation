@@ -104,8 +104,8 @@ A tuple := $(t,\rho,s)$
 
 ** Curry-Howard correspondence:
 *** The type of \texttt{call/cc} is (((A \to B) \to A) \to A) \pause
-That is also /Peirce's law/ --- which implies LEM \\\quad (ability to
-type check classical logic programs)
+That is also /Peirce's law/ --- which implies LEM \\\quad (classical
+logic programs)
 
 * New Grammar
 ** Terms
